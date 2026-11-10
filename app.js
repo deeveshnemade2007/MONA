@@ -48,7 +48,7 @@ f:[
 {k:'time',l:'Time (optional)',t:'time'},
 {k:'desc',l:'Description (optional)',t:'ta',r:2}
 ],
-row:r=>{const d=Math.round((new Date(r.date+'T00:00')-new Date(today()+'T00:00'))/864e5);return`<div class="t">${esc(r.title)}</div>${dsc(r)}<div class="meta">${chip(fmt(r.date)+(r.time?' · '+r.time:''))}${chip(d<0?'Completed':d==0?'Today':d==1?'Tomorrow':'In '+d+' days',d<0?'':'ok')}</div>`}
+row:r=>{const d=Math.round((new Date(r.date+'T00:00')-new Date(today()+'T00:00'))/864e5);return`<div class="t">${esc(r.title)}</div>${dsc(r)}<div class="meta">${chip(new Date(r.date+'T00:00:00').toLocaleDateString('en-IN',{weekday:'long',day:'2-digit',month:'short',year:'numeric'})+(r.time?' · '+r.time:''))}${chip(d<0?'Completed':d==0?'Today':d==1?'Tomorrow':'In '+d+' days',d<0?'':'ok')}</div>`}
 },
 
 goals:{n:'Goal Vault',a:'Add Goal',s:'Goal',tog:1,def:{done:false},tabs:[['All Goals',()=>1],['Active Goals',r=>!r.done],['Completed Goals',r=>r.done]],sort:(a,b)=>(b.created||'').localeCompare(a.created||''),
