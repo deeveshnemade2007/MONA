@@ -18,7 +18,7 @@ const PRI = ['Low', 'Medium', 'High'];
 const M={
 tasks:{n:'To-Do List',a:'Add Task',s:'Task',tog:1,tabs:AT(r=>!r.done),def:{done:false},sort:(a,b)=>(a.due||'~').localeCompare(b.due||'~')||(b.created||'').localeCompare(a.created||''),
 f:[{k:'title',l:'Title',req:1},{k:'desc',l:'Description (optional)',t:'ta'},{k:'due',l:'Due date (optional)',t:'date'},{k:'pri',l:'Priority',t:'sel',o:PRI,d:'Medium'}],
-row:r=>`<div class="t ${r.done?'dn':''}">${esc(r.title)}</div>${dsc(r)}<div class="meta">${chip(r.pri,'p'+r.pri)}${r.due?chip('Due '+fmt(r.due),!r.done&&r.due<today()?'bad':''):''}</div>`},
+row:r=>`<div class="t">${esc(r.title)}</div>${dsc(r)}<div class="meta">${chip(r.pri,'p'+r.pri)}${r.due?chip('Due '+fmt(r.due),!r.done&&r.due<today()?'bad':''):''}</div>`},
 tx:{n:'Transaction',a:'Add Transaction',s:'Transaction',sort:(a,b)=>b.date.localeCompare(a.date),
 f:[{k:'type',l:'Type',t:'sel',o:['Expense','Income']},{k:'title',l:'Title',req:1},{k:'amount',l:'Amount (₹)',t:'num',req:1},{k:'date',l:'Date',t:'date',req:1,d:today()},{k:'method',l:'Payment method',t:'sel',o:['UPI','Cash','Card','Bank transfer','Other']},{k:'desc',l:'Description (optional)',t:'ta',r:2}],
 row:r=>`<div class="t">${esc(r.title)}</div>${dsc(r)}<div class="meta">${chip(r.type,r.type=='Income'?'ok':'bad')}${chip(r.method)}${chip(fmt(r.date))}</div>`,
@@ -35,10 +35,9 @@ side:r=>`<div class="amt">${inr(r.amount)}</div>`},
 points:{n:'Important Points',a:'Add Important Point',s:'Point',def:{pinned:false},sort:(a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.created||'').localeCompare(a.created||''),uq:'title',
 f:[
 {k:'title',l:'Title',req:1},
-{k:'desc',l:'Details',t:'ta',r:5},
-{k:'tags',l:'Tags (comma separated)'}
+{k:'desc',l:'Details',t:'ta',r:5}
 ],
-row:r=>`<div class="t">${r.pinned?ic('pin',14)+' ':''}${esc(r.title)}</div>${dsc(r)}<div class="meta">${(r.tags||'').split(',').map(x=>x.trim()).filter(Boolean).map(x=>chip('#'+x)).join('')}${chip('Added '+fmt((r.created||'').slice(0,10)))}</div>`,
+row:r=>`<div class="t">${r.pinned?ic('pin',14)+' ':''}${esc(r.title)}</div>${dsc(r)}<div class="meta">${chip('Added '+fmt((r.created||'').slice(0,10)))}</div>`,
 x:r=>`<button class="ic" data-a="pin" data-id="${r.id}" aria-label="${r.pinned?'Unpin':'Pin'}" ${r.pinned?'style="color:var(--ac)"':''}>${ic('pin')}</button>`
 },
 
@@ -71,7 +70,7 @@ dumps:{n:'Brain Dump',a:'Add Brain Dump',s:'Entry',sort:(a,b)=>(b.created||'').l
 f:[{k:'title',l:'Title',req:1},{k:'body',l:'Thoughts',t:'ta',r:8}],
 row:r=>`<div class="t">${esc(r.title)}</div><p style="max-height:9em;overflow:auto">${esc(r.body)}</p><div class="meta">${chip(new Date(r.created).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'}))}<span class="mu">Convert to:</span>${[['tasks','To-Do'],['points','Important Point'],['goals','Goal'],['dates','Date']].map(x=>`<button class="chip" style="border:0;cursor:pointer" data-a="conv" data-id="${r.id}" data-m="${x[0]}">${x[1]}</button>`).join('')}</div>`},
 watch:{n:'Watchlist – Movies & Series',a:'Add Movie / Series',s:'Title',tog:1,def:{done:false},tabs:[['To Watch',r=>!r.done],['Watched',r=>r.done]],sort:(a,b)=>(b.created||'').localeCompare(a.created||''),uq:'title',uq2:'type',
-f:[{k:'title',l:'Title',req:1},{k:'type',l:'Type',t:'sel',o:['Movie','Series']},{k:'ott',l:'OTT platform (e.g. Netflix)',req:1}],
+f:[{k:'title',l:'Title',req:1},{k:'type',l:'Type',t:'sel',o:['Movie','Series']},{k:'ott',l:'OTT platform',req:1}],
 row:r=>`<div class="t ${r.done?'dn':''}">${esc(r.title)}</div><div class="meta">${chip(r.type)}<span class="chip" style="background:var(--ac);color:var(--on)">${esc(r.ott)}</span></div>`}};
 function toast(m,e){const d=document.createElement('div');d.textContent=m;if(e)d.className='e';$('#toast').append(d);setTimeout(()=>d.remove(),3200)}
 function fld(f,v){const id='f_'+f.k,x=v??f.d??'',l=`<label for="${id}">${f.l}${f.req?' *':''}</label>`;
@@ -172,7 +171,7 @@ a.innerHTML=`<form class="card" id="af"><div class="logo" style="padding:0 0 4px
 const go=async up=>{const email=$('#em').value.trim(),password=$('#pw').value;if(!email||password.length<6){$('#ae').textContent='Enter an email and a password of at least 6 characters.';return}
 const{data,error}=await(up?sb.auth.signUp({email,password}):sb.auth.signInWithPassword({email,password}));
 if(error)$('#ae').textContent=error.message;else if(data.session)start(data.session);else $('#ae').textContent='Check your email to confirm your account, then sign in.'};
-$('#af').onsubmit=e=>{e.preventDefault();go(false)};$('#su').onclick=()=>go(true)}
+$('#af').onsubmit=e=>{e.preventDefault();go(false)}}
 function start(s){uid=s.user.id;db=true;const a=$('#auth');if(a)a.remove();loaded=new Set();ready=false;
 COLS.forEach(c=>col(c).onSnapshot(sn=>{S[c]=sn.docs.map(d=>({id:d.id,...d.data()}));loaded.add(c);if(loaded.size>=COLS.length)ready=true;if(!$('#dlg').open||!ready)render()},()=>toast('Could not load '+c,1)));
 sdoc().onSnapshot(sn=>{if(sn.exists)ST=sn.data();applyTheme();if(!$('#dlg').open)render()});
