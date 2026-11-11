@@ -41,4 +41,12 @@ To create one personal space where tasks, thoughts, plans, and everyday activiti
 
 ---
 
+## Developer
+
+**Deevesh Nemade**
+
+Electronics and Computer Engineering Student
+
+---
+
 **MONA – Small steps. Clear thoughts. Bigger possibilities.**
