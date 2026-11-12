@@ -30,7 +30,7 @@ return`<div class="t">${esc(r.name)} ${chip(r.kind)}</div>${dsc(r)}<div class="b
 x:r=>paid(r)<r.total?`<button class="btn g" data-a="pay" data-id="${r.id}">Pay</button>`:''},
 personal:{n:'Personal Payments',a:'Add',s:'Payment',tog:1,def:{done:false},tabs:[['All',()=>1],['Pending',r=>!r.done],['Paid',r=>r.done]],sort:(a,b)=>b.date.localeCompare(a.date),
 f:[{k:'title',l:'Title (who / what for)',req:1},{k:'amount',l:'Amount (₹)',t:'num',req:1},{k:'date',l:'Date',t:'date',req:1,d:today()},{k:'desc',l:'Note (optional)',t:'ta',r:2}],
-row:r=>`<div class="t ${r.done?'dn':''}">${esc(r.title)}</div>${dsc(r)}<div class="meta">${chip(r.done?'Paid':'Pending',r.done?'ok':'bad')}${chip(fmt(r.date))}</div>`,
+row:r=>`<div class="t">${esc(r.title)}</div>${dsc(r)}<div class="meta">${chip(r.done?'Paid':'Pending',r.done?'ok':'bad')}${chip(fmt(r.date))}</div>`,
 side:r=>`<div class="amt">${inr(r.amount)}</div>`},
 points:{n:'Important Points',a:'Add Important Point',s:'Point',def:{pinned:false},sort:(a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.created||'').localeCompare(a.created||''),uq:'title',
 f:[
