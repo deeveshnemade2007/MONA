@@ -71,7 +71,7 @@ f:[{k:'title',l:'Title',req:1},{k:'body',l:'Thoughts',t:'ta',r:8}],
 row:r=>`<div class="t">${esc(r.title)}</div><p style="max-height:9em;overflow:auto">${esc(r.body)}</p><div class="meta">${chip(new Date(r.created).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'}))}</div>`},
 watch:{n:'Watchlist – Movies & Series',a:'Add Movie / Series',s:'Title',tog:1,def:{done:false},tabs:[['To Watch',r=>!r.done],['Watched',r=>r.done]],sort:(a,b)=>(b.created||'').localeCompare(a.created||''),uq:'title',uq2:'type',
 f:[{k:'title',l:'Title',req:1},{k:'type',l:'Type',t:'sel',o:['Movie','Series']},{k:'ott',l:'OTT platform',req:1}],
-row:r=>`<div class="t ${r.done?'dn':''}">${esc(r.title)}</div><div class="meta">${chip(r.type)}<span class="chip" style="background:var(--ac);color:var(--on)">${esc(r.ott)}</span></div>`}};
+row:r=>`<div class="t">${esc(r.title)}</div><div class="meta">${chip(r.type)}<span class="chip" style="background:var(--ac);color:var(--on)">${esc(r.ott)}</span></div>`}};
 function toast(m,e){const d=document.createElement('div');d.textContent=m;if(e)d.className='e';$('#toast').append(d);setTimeout(()=>d.remove(),3200)}
 function fld(f,v){const id='f_'+f.k,x=v??f.d??'',l=`<label for="${id}">${f.l}${f.req?' *':''}</label>`;
 if(f.t=='ta')return`<div class="fl">${l}<textarea id="${id}" name="${f.k}" rows="${f.r||3}">${esc(x)}</textarea></div>`;
