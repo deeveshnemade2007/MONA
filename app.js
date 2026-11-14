@@ -63,9 +63,10 @@ shop:{n:'Shopping List',a:'Add Item',s:'Item',tog:1,def:{done:false},tabs:[['Pen
 f:[
 {k:'name',l:'Item name',req:1},
 {k:'price',l:'Estimated price (₹, optional)',t:'num'},
+{k:'desc',l:'Description (optional)',t:'ta',r:3},
 {k:'link',l:'Product link (optional)',t:'url'}
 ],
-row:r=>`<div class="t">${esc(r.name)}</div><div class="meta">${r.price?chip('≈ '+inr(r.price)):''}${chip(+fmt((r.created||'').slice(0,10)))}${/^https?:\/\//i.test(r.link||'')?`<a href="${esc(r.link)}" target="_blank" rel="noopener">Open link ↗</a>`:''}</div>`},
+row:r=>`<div class="t">${esc(r.name)}</div>${dsc(r)}<div class="meta">${r.price?chip('≈ '+inr(r.price)):''}${chip(fmt((r.created||'').slice(0,10)))}${/^https?:\/\//i.test(r.link||'')?`<a href="${esc(r.link)}" target="_blank" rel="noopener">Open link ↗</a>`:''}</div>`},
 dumps:{n:'Brain Dump',a:'Add Brain Dump',s:'Entry',sort:(a,b)=>(b.created||'').localeCompare(a.created||''),
 f:[{k:'title',l:'Title',req:1},{k:'body',l:'Thoughts',t:'ta',r:8}],
 row:r=>`<div class="t">${esc(r.title)}</div><p style="max-height:9em;overflow:auto">${esc(r.body)}</p><div class="meta">${chip(new Date(r.created).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'}))}</div>`},
