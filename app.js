@@ -66,9 +66,11 @@ f:[
 {k:'desc',l:'Description (optional)',t:'ta',r:3},
 {k:'link',l:'Product link (optional)',t:'url'}
 ],
-row:r=>`<div class="t">${esc(r.name)}</div>${dsc(r)}<div class="meta">${r.price?chip(+inr(r.price)):''}${/^https?:\/\//i.test(r.link||'')?`<a href="${esc(r.link)}" target="_blank" rel="noopener">Open link ↗</a>`:''}</div>`},dumps:{n:'Brain Dump',a:'Add Brain Dump',s:'Entry',sort:(a,b)=>(b.created||'').localeCompare(a.created||''),
+row:r=>`<div class="t">${esc(r.name)}</div>${dsc(r)}<div class="meta">${r.price?`<div>${chip('≈ '+inr(r.price))}</div>`:''}${/^https?:\/\//i.test(r.link||'')?`<div><a href="${esc(r.link)}" target="_blank" rel="noopener">Open link ↗</a></div>`:''}</div>`},
+dumps:{n:'Brain Dump',a:'Add Brain Dump',s:'Entry',sort:(a,b)=>(b.created||'').localeCompare(a.created||''),
 f:[{k:'title',l:'Title',req:1},{k:'body',l:'Thoughts',t:'ta',r:8}],
 row:r=>`<div class="t">${esc(r.title)}</div><p style="max-height:9em;overflow:auto">${esc(r.body)}</p><div class="meta">${chip(new Date(r.created).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'}))}</div>`},
+
 watch:{n:'Watchlist – Movies & Series',a:'Add Movie / Series',s:'Title',tog:1,def:{done:false},tabs:[['To Watch',r=>!r.done],['Watched',r=>r.done]],sort:(a,b)=>(b.created||'').localeCompare(a.created||''),uq:'title',uq2:'type',
 f:[{k:'title',l:'Title',req:1},{k:'type',l:'Type',t:'sel',o:['Movie','Series']},{k:'ott',l:'OTT platform',req:1}],
 row:r=>`<div class="t">${esc(r.title)}</div><div class="meta">${chip(r.type)}<span class="chip" style="background:var(--ac);color:var(--on)">${esc(r.ott)}</span></div>`}};
