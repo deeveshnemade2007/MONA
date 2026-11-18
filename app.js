@@ -174,7 +174,7 @@ const go=async up=>{const email=$('#em').value.trim(),password=$('#pw').value;if
 const{data,error}=await(up?sb.auth.signUp({email,password}):sb.auth.signInWithPassword({email,password}));
 if(error)$('#ae').textContent=error.message;else if(data.session)start(data.session);else $('#ae').textContent='Check your email to confirm your account, then sign in.'};
 $('#af').onsubmit=e=>{e.preventDefault();go(false)}}
-function start(s){uid=s.user.id;currentUserName=s.user.user_metadata?.full_name||s.user.user_metadata?.name||s.user.email?.split('@')[0]||'User';db=true;const a=$('#auth');if(a)a.remove();loaded=new Set();ready=false;COLS.forEach(c=>col(c).onSnapshot(sn=>{S[c]=sn.docs.map(d=>({id:d.id,...d.data()}));loaded.add(c);if(loaded.size>=COLS.length)ready=true;if(!$('#dlg').open||!ready)render()},()=>toast('Could not load '+c,1)));
+function start(s){uid=s.user.id;currentUserName=s.user.email?.toLowerCase()==='anujapisale@gmail.com'?'ANUJA':'DEEVESH';db=true;const a=$('#auth');if(a)a.remove();loaded=new Set();ready=false;COLS.forEach(c=>col(c).onSnapshot(sn=>{S[c]=sn.docs.map(d=>({id:d.id,...d.data()}));loaded.add(c);if(loaded.size>=COLS.length)ready=true;if(!$('#dlg').open||!ready)render()},()=>toast('Could not load '+c,1)));
 sdoc().onSnapshot(sn=>{if(sn.exists)ST=sn.data();applyTheme();if(!$('#dlg').open)render()});
 setTimeout(()=>{if(!ready){ready=true;toast('Still connecting to your data…',1);render()}},10000);
 setInterval(()=>{if(ready&&!$('#dlg').open)render()},3e5);render()}
